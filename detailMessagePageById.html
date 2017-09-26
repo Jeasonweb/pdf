@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="itemContainer" style="width: 100%;">
+			<ul class="itemsContainer" style="width: 50%;margin: 0 auto;list-style: none;">
+				<li data-value='内容一' >内容一</li>
+				<li data-value='内容二' >内容二</li>
+				<li data-value='内容三' >内容三</li>
+				<li data-value='内容四' >内容四</li>
+				<li data-value='内容五' >内容五</li>
+				<li data-value='内容六' >内容六</li>
+			</ul>
+		</div>
+	</body>
+</html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript">
+	$('.itemsContainer').on('click','li',function(){
+		var selectedValue=$(this).attr('data-value');		
+		/*$.ajax({
+			type:"get",
+			url:"",
+			async:true,
+			success:function(jsonData){
+				if(jsonData.status){
+				}else{
+					alert(jsonData.message);
+				}
+			}
+		});*/
+		var tempStr='<div id="overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;background: rgba(0,0,0,.5);">'+
+			'<div class="mainContent" style="width:40%;height:50%;position:relative;left:30%;top:25%;border:1px solid #ddd;background:#fff;border-radius:5px;">' +
+				'<div class="mainContent_top" style="height:10%;width:100%;text-align:center;font-size:1.5rem;border-bottom:1px solid #ddd;box-sizing:border-box;"><i style="float:right;font-style: normal;margin-right:1rem" class="closeBtn">&times;</i>标题</div>'+
+				'<div class="mainContent_content" style="height:90%;width:100%;overflow-y:auto;text-align:center;">' + selectedValue + '</div>'+ 
+			'</div>'+
+		'</div>'
+		$('body').append(tempStr);
+		
+		$('#overlay').on('click','.closeBtn',function(){
+			$('#overlay').remove();
+		})	
+		
+		
+	})
+</script>

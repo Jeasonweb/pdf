@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			
+			.itemsContainer li{
+				cursor: pointer;
+			}
+			
+			.lightbox{
+				position: fixed;
+			    top: 0px;
+			    left: 0px;
+			    height: 100%;
+			    width: 100%;
+			    z-index: 7;
+			    opacity: 0.3;
+			    display: block;
+			    background-color: rgb(0, 0, 0);
+			    display: none;
+			}
+			.pop,iframe{
+				position: absolute;
+			    left: 50%;
+			    top:0;
+				width: 893px;
+			    height: 100%;
+			    margin-left: -446.5px;
+			    z-index: 9;
+			}
+	
+		</style>
+	</head>
+	<body>
+		
+		<div class="itemContainer" style="float: left;width: 30%;">
+			<ul class="itemsContainer">
+				<li data-value='Images.pdf' >Images.pdf</li>
+				<li data-value='样本.pdf' >样本.pdf</li>
+				<li data-value='Images.pdf' >Images.pdf</li>
+				<li data-value='Images.pdf' >Images.pdf</li>
+				<li data-value='Images.pdf' >Images.pdf</li>
+				<li data-value='Images.pdf' >Images.pdf</li>
+			</ul>
+		</div>
+		<div class="showPdfContainer" style="float: left;width: 70%;">
+			<canvas id="the-canvas"></canvas>
+		</div>
+
+		
+	</body>
+</html>
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+<script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var url=$('.itemsContainer').find('li').eq(0).attr('data-value');
+		showPdf(url);		
+	})
+	$('.itemsContainer').on('mouseover','li',function(){
+		var url=$(this).attr('data-value');
+		showPdf(url);
+	})
+	function showPdf(url){		
+		PDFJS.workerSrc = 'js/pdf.worker.js';//加载核心库
+		PDFJS.getDocument(url).then(function getPdfHelloWorld(pdf) {
+		// 获取第一页数据	
+		pdf.getPage(1).then(function getPageHelloWorld(page) {
+			var scale = 1.5;
+			var viewport = page.getViewport(scale);
+			
+			// Prepare canvas using PDF page dimensions
+			var canvas = document.getElementById('the-canvas');
+			var context = canvas.getContext('2d');
+			canvas.height = viewport.height;
+			canvas.width = viewport.width;
+			
+			// Render PDF page into canvas context
+			var renderContext = {
+				canvasContext: context,
+				viewport: viewport
+			};
+			page.render(renderContext);
+			});
+		});
+	}
+</script>
